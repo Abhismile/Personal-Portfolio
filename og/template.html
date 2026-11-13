@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Share card</title>
+<!-- Rendered to public/og.png by `npm run og`. Size: 1200 x 630 (Open Graph standard). -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Public+Sans:wght@500;600&family=Azeret+Mono:wght@500&display=block" rel="stylesheet" />
+<style>
+  :root {
+    --paper: #eef1e8; --plate: #f6f8f2; --ink: #16232e; --ink-2: #47575f;
+    --line: rgba(22, 35, 46, 0.42); --line-soft: rgba(22, 35, 46, 0.16);
+    --guilloche: #2f5d62; --bronze: #8a6a3c; --seal: #7a2e2a;
+    --display: 'Old Standard TT', Georgia, serif; --body: 'Public Sans', system-ui, sans-serif; --data: 'Azeret Mono', ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; }
+  body {
+    background-color: var(--paper);
+    background-image:
+      repeating-linear-gradient(115deg, transparent 0 7px, rgba(47, 93, 98, 0.07) 7px 8px),
+      repeating-linear-gradient(65deg, transparent 0 11px, rgba(138, 106, 60, 0.06) 11px 12px);
+    color: var(--ink); font-family: var(--body);
+    padding: 28px;
+  }
+  .card { position: relative; width: 100%; height: 100%; background: var(--plate); border: 1.5px solid var(--line); overflow: hidden; }
+  .card::after { content: ''; position: absolute; inset: 7px; border: 1px solid var(--line-soft); pointer-events: none; }
+  canvas.field { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .micro { position: absolute; top: 13px; left: 16px; right: 16px; overflow: hidden; white-space: nowrap; font-family: var(--data); font-size: 6px; letter-spacing: 0.08em; color: var(--guilloche); }
+  .body { position: absolute; inset: 0; padding: 54px 60px 0; display: grid; grid-template-columns: 1fr 300px; gap: 40px; }
+  h1 { font-family: var(--display); font-weight: 700; font-size: 104px; line-height: 0.92; letter-spacing: -0.02em; margin: 0; }
+  h1 span { display: block; font-weight: 400; font-style: italic; }
+  .role { margin-top: 22px; font-family: var(--display); font-size: 34px; line-height: 1.2; }
+  .role .t { margin-left: -0.07em; }
+  .tools { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .tools span { font-size: 19px; font-weight: 600; padding: 8px 16px; border: 1px solid var(--line); background: var(--paper); }
+  .cert { margin-top: 18px; display: flex; align-items: baseline; gap: 12px; font-size: 20px; }
+  .label { font-size: 14px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); }
+  .seal { display: grid; justify-items: center; align-content: start; gap: 14px; }
+  .medal { position: relative; width: 300px; height: 300px; }
+  .medal canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .medal img { position: absolute; left: 50%; top: 50%; width: 61%; height: 61%; transform: translate(-50%, -50%); border-radius: 50%; object-fit: cover; object-position: 50% 32%; box-shadow: 0 0 0 1px var(--line); }
+  .open { font-size: 18px; font-weight: 600; color: #fbf3ea; background: var(--seal); padding: 10px 18px; }
+  .micr { position: absolute; left: 0; right: 0; bottom: 0; height: 74px; padding: 0 60px; display: flex; align-items: center; justify-content: space-between; border-top: 1.5px dashed var(--line); font-family: var(--data); font-size: 22px; letter-spacing: 0.14em; }
+  .micr .codes { display: flex; align-items: center; gap: 26px; white-space: nowrap; }
+  .micr svg { display: inline-block; vertical-align: middle; }
+  .micr .url { font-family: var(--body); font-weight: 600; letter-spacing: 0; font-size: 22px; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <canvas class="field" id="field"></canvas>
+    <div class="micro" id="micro"></div>
+    <div class="body">
+      <div>
+        <h1>Abhishek <span>Shukla</span></h1>
+        <p class="role">Data Analyst · Fin<span class="t">T</span>ech &amp; accounting data</p>
+        <div class="tools"><span>SQL</span><span>Power BI</span><span>Python</span><span>Pentaho ETL</span><span>Excel</span></div>
+        <p class="cert"><span class="label">Certified</span><span>Microsoft Power BI Data Analyst (PL-300)</span></p>
+      </div>
+      <div class="seal">
+        <div class="medal"><canvas id="rosette"></canvas><img src="../public/portrait.jpg" alt="" /></div>
+      </div>
+    </div>
+    <div class="micr">
+      <span class="codes">
+        <span><svg width="13" height="18" viewBox="0 0 14 16" fill="currentColor"><rect x="0" y="2" width="3" height="10"/><rect x="5" y="2" width="3" height="10"/><rect x="10" y="10" width="4" height="4"/></svg> 001 <svg width="13" height="18" viewBox="0 0 14 16" fill="currentColor"><rect x="0" y="2" width="3" height="10"/><rect x="5" y="2" width="3" height="10"/><rect x="10" y="10" width="4" height="4"/></svg></span>
+        <span>FINTECH</span>
+        <span>PORTFOLIO</span>
+      </span>
+      <span class="url" id="url"></span>
+    </div>
+  </div>
+<script>
+  // Text for the URL slot comes from the render script (?url=...)
+  const url = new URLSearchParams(location.search).get('url') || '';
+  document.getElementById('url').textContent = url.replace(/^https?:\/\//, '').replace(/\/$/, '');
+  document.getElementById('micro').textContent = 'ABHISHEKSHUKLA·DATAANALYST·FINTECH·ACCOUNTING·'.repeat(30);
+
+  function setup(c) {
+    const dpr = 2, w = c.clientWidth, h = c.clientHeight;
+    c.width = w * dpr; c.height = h * dpr;
+    const ctx = c.getContext('2d'); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { ctx, w, h };
+  }
+  // security tint field
+  { const { ctx, w, h } = setup(document.getElementById('field'));
+    ctx.lineWidth = 0.6;
+    for (let y = -20, i = 0; y < h + 20; y += 9, i++) {
+      ctx.strokeStyle = i % 3 === 0 ? '#8a6a3c' : '#2f5d62'; ctx.globalAlpha = 0.15; ctx.beginPath();
+      for (let x = 0; x <= w; x += 6) { const yy = y + Math.sin(x * 0.012 + i * 0.35 + 2) * 7 + Math.sin(x * 0.031 + 4) * 2.5; x ? ctx.lineTo(x, yy) : ctx.moveTo(x, yy); }
+      ctx.stroke();
+    } }
+  // portrait frame: 10 lobes (10+ KPIs), 4 rings (4 tools) — same rule as the site
+  { const { ctx, w, h } = setup(document.getElementById('rosette'));
+    const cx = w / 2, cy = h / 2, R = Math.min(w, h) / 2 - 2, petals = 10, rings = 4;
+    ctx.lineWidth = 0.5;
+    for (let i = 0; i < rings; i++) { ctx.strokeStyle = i % 2 ? '#8a6a3c' : '#2f5d62'; ctx.globalAlpha = 0.75; ctx.beginPath(); ctx.arc(cx, cy, R * (0.645 + i * 0.022), 0, Math.PI * 2); ctx.stroke(); }
+    for (let i = 0; i < 36; i++) {
+      ctx.strokeStyle = i % 3 === 0 ? '#8a6a3c' : '#2f5d62'; ctx.globalAlpha = 0.4; ctx.beginPath();
+      for (let s = 0; s <= 720; s++) { const t = (s / 720) * Math.PI * 2; const r = R * (0.87 + 0.09 * Math.cos(t * petals + i * 0.045)) + Math.sin(t * petals * 4 + i * 0.3) * R * 0.012; const x = cx + Math.cos(t) * r, y = cy + Math.sin(t) * r; s ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }
+      ctx.stroke();
+    } }
+</script>
+</body>
+</html>

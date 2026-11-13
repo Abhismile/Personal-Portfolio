@@ -1,0 +1,26 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "italic-serif-display",
+        "value": "*",
+        "files": [
+          "og/template.html"
+        ],
+        "createdAt": "2026-11-02T07:49:44.332Z",
+        "reason": "assistant decision: the share card repeats the site's engraved Old Standard TT name (roman 'Abhishek', italic 'Shukla') from the user-chosen 'Security-printed instrument' direction; the card must match the hero"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "og/template.html"
+        ],
+        "createdAt": "2026-11-02T07:49:45.035Z",
+        "reason": "assistant decision: flagged child is the full-bleed MICR strip at the card's foot, 74px tall with text vertically centred (~26px inset); same treatment as the site's MICR line"
+      }
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+node_modules
+dist
+*.tsbuildinfo
+
+# local environment (copy .env.example to .env)
+.env
+.env.*
+!.env.example
+
+# AI tooling installed per machine (impeccable skills, engine binaries, hooks)
+.agent/
+.gemini/
+.claude/
+
+# impeccable working files; PRODUCT.md, DESIGN.md, design.json and surface briefs stay tracked
+.impeccable/review/
+.impeccable/questions/
+.impeccable/mocks/
+.impeccable/build/
+.impeccable/hook.cache.json
+.impeccable/config.local.json
