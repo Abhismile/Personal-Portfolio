@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-02T07:23:16.305Z",
+  "generatedAt": "2026-11-13T00:00:00.000Z",
   "title": "Design System: Abhishek Shukla, Data Analyst",
   "extensions": {
     "colorMeta": {
@@ -291,7 +291,12 @@
       {
         "name": "rosette-canvas",
         "value": "36 phase-shifted sine strands (every third bronze, 35% alpha) plus rings x 5 hypotrochoid copies (38%), 0.4px lines; lobes = first KPI clamped 3..14, rings = tool count",
-        "purpose": "Seal on the instrument; placeholder in missing certificates."
+        "purpose": "Placeholder in missing certificates; the hollow variant (one frame ring per tool, alternating teal and bronze at 70%, inside the lace band) is the seal's no-WebGL fallback."
+      },
+      {
+        "name": "wire-seal",
+        "value": "three.js LineSegments, lobed torus (R 1, tube 0.085), tilt -0.38 rad; lobes = first KPI clamped 3..14; lace strands = tool count in var(--guilloche) at var(--wire-lace) (0.5 day / 0.7 night); meridian hoops = lobes x 5 in var(--bronze) at var(--wire-hoop) (0.24 day / 0.34 night); canvas inset -14% around the 260px medallion (132px below 760px)",
+        "purpose": "The instrument's seal, framing the portrait; falls back to the hollow rosette-canvas without WebGL."
       }
     ],
     "motion": [
@@ -302,8 +307,8 @@
       },
       {
         "name": "guilloche-draw",
-        "value": "1800ms rosette, 1400ms tint field, cubic ease-out",
-        "purpose": "One-time draw-in on load; drawn static under reduced motion."
+        "value": "1400ms tint field, 1800ms rosette, 2200ms wire seal (draw range), cubic ease-out",
+        "purpose": "One-time draw-in on load; drawn still under reduced motion."
       },
       {
         "name": "state",
@@ -314,6 +319,11 @@
         "name": "header-rule",
         "value": "0.3s border-color",
         "purpose": "Header gains its rule after 24px of scroll."
+      },
+      {
+        "name": "wire-seal-idle",
+        "value": "0.07 rad/s turn; pointer lean up to 0.06 rad (x) and 0.08 rad (y), eased at 0.04 per frame",
+        "purpose": "The seal's only continuing motion; paused off-screen and on hidden tabs, one still frame under reduced motion; low-power renderer, DPR capped at 2, three.js in its own chunk."
       }
     ],
     "breakpoints": [
@@ -415,13 +425,13 @@
   ],
   "narrative": {
     "northStar": "The Security-Printed Instrument",
-    "overview": "The page is printed on security paper. The opening screen is one wide bank instrument: an issuer block with the name engraved large, a serial and type at the top right, a canvas-drawn guilloche rosette seal, a payee line that carries the lead case study, an amount box for the one validated figure, and a MICR code line along the foot. Everything below is the paperwork that backs the instrument: case studies as counterfoil documents with perforated stubs, and about, experience, skills and certificates as ruled registers and statements. The contact block is a remittance slip.\n\nThe material is pale green-grey tint stock crossed by two fine diagonal line fields, with deep blue-black intaglio ink. Ornament comes from the craft of security printing itself (guilloche line fields, rosettes, microprint rules, perforations, MICR symbols), never from effects. Density is that of a financial document: ruled rows, tabular numerals, and small uppercase field captions that label values the way a printed form does. The night variant prints the same plate in pale ink on dark stock; nothing is restyled, only re-inked.\n\nThe system refuses the portfolio-category default: no dark gradient hero, no glass cards, no stat tiles, no scattered decorative effects. Figures appear in ruled tables or the single amount box, never as giant numbers.",
+    "overview": "The page is printed on security paper. The opening screen is one wide bank instrument: an issuer block with the name engraved large, a serial and type at the top right, a live seal (a near face-on wireframe lace ring, drawn only in lines, framing a round portrait), a payee line that carries the lead case study, an amount box for the one validated figure, and a MICR code line along the foot. Everything below is the paperwork that backs the instrument: case studies as counterfoil documents with perforated stubs, and about, experience, skills and certificates as ruled registers and statements. The contact block is a remittance slip.\n\nThe material is pale green-grey tint stock crossed by two fine diagonal line fields, with deep blue-black intaglio ink. Ornament comes from the craft of security printing itself (guilloche line fields, rosettes, microprint rules, perforations, MICR symbols), never from effects. Density is that of a financial document: ruled rows, tabular numerals, and small uppercase field captions that label values the way a printed form does. The night variant prints the same plate in pale ink on dark stock; nothing is restyled, only re-inked.\n\nThe system refuses the portfolio-category default: no dark gradient hero, no glass cards, no stat tiles, no scattered decorative effects. Figures appear in ruled tables or the single amount box, never as giant numbers.",
     "keyCharacteristics": [
       "Tint paper with two crossing hairline fields (115deg teal at 6%, 65deg bronze at 5%) on every surface.",
       "One engraved roman display face, one institutional sans, one data mono for serials, codes and figures.",
       "Hairline rules do all the structural work; corners are square or 2px.",
       "One oxblood seal ink, filled only on the \"Open case study\" action.",
-      "Canvas guilloche (rosettes and tint fields) drawn from the project's own figures, drawn in once on load."
+      "Guilloche drawn from the project's own figures: canvas tint fields and rosettes drawn in once on load, and a wireframe lace-ring seal that draws in once and then turns slowly."
     ],
     "rules": [
       {
@@ -431,7 +441,7 @@
       },
       {
         "name": "The Security Ink Rule",
-        "body": "Teal and bronze are printing inks, not interface colours. They draw ornament (line fields, rosettes, microprint, list markers) and never carry text, borders of controls, or state.",
+        "body": "Teal and bronze are printing inks, not interface colours. They draw ornament (line fields, rosettes, the seal's lace ring, microprint, list markers) and never carry text, borders of controls, or state.",
         "section": "colors"
       },
       {
@@ -459,7 +469,7 @@
       "**Do** print every surface on tint stock with the two crossing hairline fields; keep raised documents on bright plate with a ruled border.",
       "**Do** fill oxblood only on \"Open case study\"; every other action is an ink outline that fills with ink on hover.",
       "**Do** set every claimed number in Azeret Mono inside a ruled column, the amount box or a serial.",
-      "**Do** draw guilloche from real figures (lobes per KPI, rings per tool) and print its legend; render it once with a 1.4 to 1.8s ease-out draw-in, static under reduced motion.",
+      "**Do** draw guilloche from real figures (lobes per KPI, rings per tool) and print its legend; draw it in once with a cubic ease-out (1.4s tint fields, 1.8s rosettes, 2.2s wire seal). Only the seal keeps moving, slowly, and everything renders still under reduced motion.",
       "**Do** use dashed rules and perforations for tear lines between a stub and its document.",
       "**Do** keep corners square on documents and 2px on controls.",
       "**Do** keep the night variant a re-inking of the same plate: swap tokens, never layouts."

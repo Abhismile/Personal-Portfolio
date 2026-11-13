@@ -9,6 +9,8 @@
   --line-strong: rgba(22, 35, 46, 0.42);
   --guilloche: #2f5d62;
   --bronze: #8a6a3c;
+  --wire-lace: 0.5;
+  --wire-hoop: 0.24;
   --seal: #7a2e2a;
   --seal-hover: #642420;
   --on-seal: #fbf3ea;
@@ -38,6 +40,7 @@
     --ink: #efe7d2; --ink-2: #b4b29d;
     --line: rgba(212, 184, 128, 0.16); --line-strong: rgba(212, 184, 128, 0.42);
     --guilloche: #5f9488; --bronze: #c8a564;
+    --wire-lace: 0.7; --wire-hoop: 0.34;
     --seal: #a33a32; --seal-hover: #b6463d; --on-seal: #fbf1e2;
     --sheen: radial-gradient(120% 90% at 88% 0%, rgba(200, 165, 100, 0.11), transparent 62%);
     --tint-1: rgba(200, 165, 100, 0.045); --tint-2: rgba(95, 148, 136, 0.06);
@@ -50,6 +53,7 @@
   --ink: #efe7d2; --ink-2: #b4b29d;
   --line: rgba(212, 184, 128, 0.16); --line-strong: rgba(212, 184, 128, 0.42);
   --guilloche: #5f9488; --bronze: #c8a564;
+  --wire-lace: 0.7; --wire-hoop: 0.34;
   --seal: #a33a32; --seal-hover: #b6463d; --on-seal: #fbf1e2;
   --sheen: radial-gradient(120% 90% at 88% 0%, rgba(200, 165, 100, 0.11), transparent 62%);
   --tint-1: rgba(200, 165, 100, 0.045); --tint-2: rgba(95, 148, 136, 0.06);
@@ -142,13 +146,14 @@ code { font-family: var(--data); font-size: 0.85em; }
 .serial .date .data { border-bottom: 1px solid var(--line-strong); padding: 2px 4px; }
 .status { display: flex; align-items: baseline; gap: 12px; margin-top: 14px; font-size: 0.9rem; }
 
-.seal { display: grid; justify-items: end; gap: 18px; }
+.seal { display: grid; justify-items: end; gap: 10px; }
 .inst-main { margin-top: clamp(22px, 3vw, 32px); padding-top: clamp(22px, 3vw, 32px); border-top: 1px solid var(--line-strong); }
 .rosette { width: 240px; height: 240px; display: block; }
-.medallion { position: relative; width: 260px; height: 260px; margin: 0; }
+/* vertical room for the lace ring, which reaches past the medallion box */
+.medallion { position: relative; width: 260px; height: 260px; margin: 6px 0 30px; }
 .medallion-frame { position: absolute; inset: 0; width: 100%; height: 100%; }
-/* three.js wireframe ring: wider than the medallion so the tilted ring clears the portrait */
-.wire-seal { position: absolute; top: -12%; bottom: -12%; left: -45%; right: -45%; pointer-events: none; }
+/* three.js wireframe ring: a square slightly larger than the medallion, so the lace band encircles the portrait */
+.wire-seal { position: absolute; inset: -14%; pointer-events: none; }
 .wire-seal canvas { display: block; width: 100%; height: 100%; }
 .medallion img { position: absolute; left: 50%; top: 50%; width: 61%; height: 61%; transform: translate(-50%, -50%); border-radius: 50%; object-fit: cover; object-position: 50% 32%; filter: saturate(0.92) contrast(1.03); box-shadow: 0 0 0 1px var(--line-strong), 0 10px 24px -14px rgba(0, 0, 0, 0.55); }
 .payee { display: grid; grid-template-columns: 110px 1fr; gap: 6px 18px; align-items: baseline; }
@@ -283,15 +288,17 @@ footer a { text-decoration: none; }
   /* phone: keep the case and its action in the first screen; the seal sits after the instrument body */
   .inst-body { display: flex; flex-direction: column; }
   .inst-top { display: contents; }
-  /* phone: the portrait medallion sits beside the name; serial and legend live in the MICR line and case */
-  .seal { position: absolute; top: clamp(22px, 4vw, 44px); right: clamp(20px, 4vw, 48px); display: block; }
-  .seal .serial, .seal-legend { display: none; }
-  .medallion { width: 108px; height: 108px; }
-  .inst-top h1 { padding-right: 116px; }
+  /* phone: the seal follows the action, with its serial and legend beside it */
+  .seal { order: 3; display: grid; grid-template-columns: auto 1fr; grid-template-areas: 'medal serial' 'medal legend'; align-items: center; justify-items: start; gap: 6px 22px; margin-top: 34px; padding-top: 28px; border-top: 1px solid var(--line-strong); }
+  .seal .serial { grid-area: serial; align-self: end; }
+  .seal .medallion { grid-area: medal; width: 132px; height: 132px; margin: 18px; }
+  .seal-legend { grid-area: legend; align-self: start; max-width: none; text-align: left; }
   /* the problem statement repeats inside the case; drop it here so Open case study stays in the first screen */
   .payee .for, .payee .val.small { display: none; }
   .serial { justify-items: start; text-align: left; }
+  /* the label would stack above the title as an eyebrow; the title stands on its own here */
   .payee { grid-template-columns: 1fr; }
+  .payee .field-label { display: none; }
   .payee-row, .inst-main .stations { margin-left: 0; }
   .signature { margin-left: 0; justify-items: start; }
   .case { grid-template-columns: 1fr; }
@@ -310,6 +317,9 @@ footer a { text-decoration: none; }
 }
 @media (max-width: 480px) {
   .certs { grid-template-columns: 1fr; }
+  /* keep the MICR line on one line; the tool codes are listed in the case stub below */
+  .micr { flex-wrap: nowrap; gap: 4px 16px; font-size: 0.9rem; letter-spacing: 0.1em; }
+  .micr span:nth-child(3) { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

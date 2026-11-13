@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
-const TILT = -1.2;
+// near face-on, like a seal printed on the note, with just enough lean to show depth
+const TILT = -0.38;
 const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 function webgl() {
@@ -38,8 +39,8 @@ export default function WireSeal({ petals, rings, fallback }: { petals: number; 
       const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 20);
       camera.position.set(0, 0, 4.6);
 
-      // lace strands winding round the tube, and meridian hoops across it
-      const strands = rings * 4;
+      // one lace strand per tool winding round the tube, and meridian hoops across it
+      const strands = rings;
       const steps = 480;
       const hoops = petals * 5;
       const R = 1, tube = 0.085;
@@ -72,11 +73,19 @@ export default function WireSeal({ petals, rings, fallback }: { petals: number; 
 
       const css = () => {
         const s = getComputedStyle(document.documentElement);
-        return { g: s.getPropertyValue('--guilloche').trim() || '#2f5d62', b: s.getPropertyValue('--bronze').trim() || '#8a6a3c' };
+        const n = (v: string, d: number) => { const x = parseFloat(s.getPropertyValue(v)); return Number.isFinite(x) ? x : d; };
+        return {
+          g: s.getPropertyValue('--guilloche').trim() || '#2f5d62', b: s.getPropertyValue('--bronze').trim() || '#8a6a3c',
+          lace: n('--wire-lace', 0.5), hoop: n('--wire-hoop', 0.22),
+        };
       };
-      const laceMat = new THREE.LineBasicMaterial({ transparent: true, opacity: 0.42, depthWrite: false });
-      const hoopMat = new THREE.LineBasicMaterial({ transparent: true, opacity: 0.16, depthWrite: false });
-      const paint = () => { const c = css(); laceMat.color.set(c.g); hoopMat.color.set(c.b); };
+      const laceMat = new THREE.LineBasicMaterial({ transparent: true, opacity: 0.5, depthWrite: false });
+      const hoopMat = new THREE.LineBasicMaterial({ transparent: true, opacity: 0.22, depthWrite: false });
+      const paint = () => {
+        const c = css();
+        laceMat.color.set(c.g); hoopMat.color.set(c.b);
+        laceMat.opacity = c.lace; hoopMat.opacity = c.hoop;
+      };
       paint();
 
       const laceGeo = new THREE.BufferGeometry();

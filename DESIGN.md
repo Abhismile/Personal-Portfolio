@@ -152,7 +152,7 @@ components:
 
 **Creative North Star: "The Security-Printed Instrument"**
 
-The page is printed on security paper. The opening screen is one wide bank instrument: an issuer block with the name engraved large, a serial and type at the top right, a canvas-drawn guilloche rosette seal, a payee line that carries the lead case study, an amount box for the one validated figure, and a MICR code line along the foot. Everything below is the paperwork that backs the instrument: case studies as counterfoil documents with perforated stubs, and about, experience, skills and certificates as ruled registers and statements. The contact block is a remittance slip.
+The page is printed on security paper. The opening screen is one wide bank instrument: an issuer block with the name engraved large, a serial and type at the top right, a live seal (a near face-on wireframe lace ring, drawn only in lines, framing a round portrait), a payee line that carries the lead case study, an amount box for the one validated figure, and a MICR code line along the foot. Everything below is the paperwork that backs the instrument: case studies as counterfoil documents with perforated stubs, and about, experience, skills and certificates as ruled registers and statements. The contact block is a remittance slip.
 
 The material is pale green-grey tint stock crossed by two fine diagonal line fields, with deep blue-black intaglio ink. Ornament comes from the craft of security printing itself (guilloche line fields, rosettes, microprint rules, perforations, MICR symbols), never from effects. Density is that of a financial document: ruled rows, tabular numerals, and small uppercase field captions that label values the way a printed form does. The night variant prints the same plate in pale ink on dark stock; nothing is restyled, only re-inked.
 
@@ -163,7 +163,7 @@ The system refuses the portfolio-category default: no dark gradient hero, no gla
 - One engraved roman display face, one institutional sans, one data mono for serials, codes and figures.
 - Hairline rules do all the structural work; corners are square or 2px.
 - One oxblood seal ink, filled only on the "Open case study" action.
-- Canvas guilloche (rosettes and tint fields) drawn from the project's own figures, drawn in once on load.
+- Guilloche drawn from the project's own figures: canvas tint fields and rosettes drawn in once on load, and a wireframe lace-ring seal that draws in once and then turns slowly.
 
 ## Colors
 
@@ -176,8 +176,8 @@ A two-ink plate on tint stock: blue-black intaglio, teal and bronze security ink
 - **Oxblood Seal** (`seal`, hover `seal-hover`, text `on-seal`): the filled "Open case study" action, in the instrument and on each case. Also used as the hover colour of link underlines and contact-slip links, and as the text caret.
 
 ### Tertiary
-- **Security Teal** (`guilloche`): rosette lattice, tint-field lines, microprint, list markers in registers and case outcomes.
-- **Engraver's Bronze** (`bronze`): every third strand of the rosette and tint field, the rosette's centre ring, and the 65deg body tint field. Never used for text or UI.
+- **Security Teal** (`guilloche`): the seal's lace strands, rosette lattice, tint-field lines, microprint, list markers in registers and case outcomes.
+- **Engraver's Bronze** (`bronze`): the seal's meridian hoops, every third strand of the tint field and of the 2D rosettes, the 2D rosette's centre ring, and the 65deg body tint field. Never used for text or UI.
 
 ### Neutral
 - **Tint Stock** (`paper`): the page, header, station chips, the amount box and the perforation holes.
@@ -188,10 +188,12 @@ A two-ink plate on tint stock: blue-black intaglio, teal and bronze security ink
 
 Night tokens (`*-night`) apply the same roles under `prefers-color-scheme: dark` or `data-theme="dark"`.
 
+Two per-theme opacity tokens set the wire seal's line strength: `--wire-lace` for the teal lace strands (0.5 day, 0.7 night) and `--wire-hoop` for the bronze hoops (0.24 day, 0.34 night). Night runs heavier so the hairlines hold the same weight against dark stock. They are scalars, not colours, so they are carried here and in the sidecar rather than in the colour front matter.
+
 ### Named Rules
 **The One Seal Rule.** Oxblood is filled on one control only: "Open case study". Every other button is an ink outline. Once a case is open, its button drops back to ink ("Close case study").
 
-**The Security Ink Rule.** Teal and bronze are printing inks, not interface colours. They draw ornament (line fields, rosettes, microprint, list markers) and never carry text, borders of controls, or state.
+**The Security Ink Rule.** Teal and bronze are printing inks, not interface colours. They draw ornament (line fields, rosettes, the seal's lace ring, microprint, list markers) and never carry text, borders of controls, or state.
 
 ## Typography
 
@@ -221,11 +223,11 @@ Night tokens (`*-night`) apply the same roles under `prefers-color-scheme: dark`
 
 A single centred column (max 1180px) with safe-area-aware 16px gutters and a 60px sticky header. The header is paper-filled and gains a ruled bottom line once the page scrolls past 24px.
 
-The instrument sits 20px under the header and spans the column. Inside it, the issuer block and the seal share a two-column grid (content, auto); below a ruled line, payee fields use a 110px caption column, and the station strip and action row are indented to align with the values (128px). The MICR line runs full-width along the foot above a dashed rule. Instrument padding is clamp(22px, 4vw, 44px) vertically and clamp(20px, 4vw, 48px) horizontally.
+The sticky header and its rule sit outside the instrument's frame, 20px above its top edge; the instrument spans the column. Inside it, the issuer block and the seal share a two-column grid (content, auto). The seal column stacks Case no. and Type, the 260px portrait medallion (6px above, 30px below, room for the lace ring that overhangs it) and the legend, 10px apart; below a ruled line, payee fields use a 110px caption column, and the station strip and action row are indented to align with the values (128px). The MICR line runs full-width along the foot above a dashed rule. Instrument padding is clamp(22px, 4vw, 44px) vertically and clamp(20px, 4vw, 48px) horizontally.
 
 Sections open every clamp(72px, 10vw, 120px) with a section head: headline left, a short ink-2 note right (max 46ch), closed by a 2px ink rule and 28px of space. Case documents stack with 22px gaps; each is a 190px stub plus body. About is a two-column grid; certificates run four across.
 
-Breakpoints: at 1000px the nav collapses into a menu button, certificates go to two columns and About stacks. At 760px the instrument reflows so the case title and its action stay in the first screen: the seal (rosette reduced to 96px) follows the body, the problem line is dropped from the instrument, case stubs move above the body with horizontal perforations, and ruled tables become stacked rows. At 480px certificates go to one column.
+Breakpoints: at 1000px the nav collapses into a menu button, certificates go to two columns and About stacks. At 760px the instrument reflows so the case title and its action stay in the first screen: the seal follows the action behind a ruled line, with Case no., Type and the legend set beside a 132px medallion; the problem line and the "Case study" payee caption are dropped from the instrument (the title stands alone); case stubs move above the body with horizontal perforations, and ruled tables become stacked rows. At 480px certificates go to one column and the MICR line stays on a single line, dropping its tool-codes span (the codes remain in the case stub).
 
 ## Elevation & Depth
 
@@ -267,7 +269,7 @@ Header: the name in the display face with a mono "Data Analyst" code beside it, 
 The workhorse for About, Experience, Skills and Certificates. Full-width tables with label-type headers over a ruled line, 16px row padding, hairline row dividers, a 190px key column in 600, mono for periods and right-aligned counts, teal list markers. On phones each row stacks into a block.
 
 ### The Instrument (signature)
-A bright-plate panel with a ruled outer border and an inner hairline frame inset 6px, over a canvas tint field of wavy teal and bronze lines (9px pitch, 16% alpha). A microprint rule of repeated name and role at 5.5px runs along its top; the footer repeats it. The rosette seal (240px, 96px on phones) is drawn from the lead case's figures: one lobe per stated KPI, one ring per tool, with the legend printed beneath it. The amount box frames the single validated figure in a 1.5px ink border. The MICR line closes the instrument with drawn E-13B symbols around the case serial and tool codes.
+A bright-plate panel with a ruled outer border and an inner hairline frame inset 6px, over a canvas tint field of wavy teal and bronze lines (9px pitch, 16% alpha). A microprint rule of repeated name and role at 5.5px runs along its top; the footer repeats it. The seal is a lobed torus drawn only in lines with three.js, tilted near face-on (-0.38 rad) around a round portrait in a 260px medallion (132px on phones); its square canvas overhangs the medallion by 14% on every side so the lace band encircles the portrait. It is drawn from the lead case's figures: one lobe per stated KPI (the first figure, clamped 3 to 14), one teal lace strand per tool twisting through the tube, and five bronze meridian hoops per lobe, with the legend printed beneath it. It draws in once over 2.2s (cubic ease-out), then turns slowly and leans a few degrees toward the pointer; it pauses off-screen and on hidden tabs and renders one still frame under reduced motion. three.js loads as its own chunk on a low-power renderer with pixel ratio capped at 2; without WebGL the seal falls back to the hollow 2D canvas rosette (one frame ring per tool inside the lace band). The amount box frames the single validated figure in a 1.5px ink border. The MICR line closes the instrument with drawn E-13B symbols around the case serial and tool codes.
 
 ### Iconography
 One authored set on a 20px grid: 1.5px round-capped strokes in currentColor, 18px by default (arrow, external, copy, download, sun, moon, menu, close). MICR transit and on-us symbols are drawn as filled SVG rectangles rather than relying on font coverage.
@@ -278,7 +280,7 @@ One authored set on a 20px grid: 1.5px round-capped strokes in currentColor, 18p
 - **Do** print every surface on tint stock with the two crossing hairline fields; keep raised documents on bright plate with a ruled border.
 - **Do** fill oxblood only on "Open case study"; every other action is an ink outline that fills with ink on hover.
 - **Do** set every claimed number in Azeret Mono inside a ruled column, the amount box or a serial.
-- **Do** draw guilloche from real figures (lobes per KPI, rings per tool) and print its legend; render it once with a 1.4 to 1.8s ease-out draw-in, static under reduced motion.
+- **Do** draw guilloche from real figures (lobes per KPI, rings per tool) and print its legend; draw it in once with a cubic ease-out (1.4s tint fields, 1.8s rosettes, 2.2s wire seal). Only the seal keeps moving, slowly, and everything renders still under reduced motion.
 - **Do** use dashed rules and perforations for tear lines between a stub and its document.
 - **Do** keep corners square on documents and 2px on controls.
 - **Do** keep the night variant a re-inking of the same plate: swap tokens, never layouts.
